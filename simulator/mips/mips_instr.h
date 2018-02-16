@@ -240,7 +240,19 @@ class MIPSInstr
         // Predicate helpers - immediate unsigned
         bool ltiu() const { return v_src1 <  static_cast<uint32>(sign_extend( v_imm)); }
         bool geiu() const { return v_src1 >= static_cast<uint32>(sign_extend( v_imm)); }
-
+        
+        uint32 count_zeros(uint32 value) 
+        {
+            uint32_t count = 0;
+            for ( uint32_t i = 0x80000000; i > 0; i >>= 1)
+            {
+                if ( value & i)
+                   break; 
+                count++;  
+            }  
+            return count;
+        }
+        
         void execute_add()   { v_dst = static_cast<int32>( v_src1) + static_cast<int32>( v_src2); }
         void execute_sub()   { v_dst = static_cast<int32>( v_src1) - static_cast<int32>( v_src2); }
         void execute_addi()  { v_dst = static_cast<int32>( v_src1) + sign_extend( v_imm); }
